@@ -24,6 +24,9 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private String address; // 주소
+    private String phone_number; // 핸드폰번호
+    private String grade; // 등급
 
     private String role; // 권한
 
