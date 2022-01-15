@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,11 +19,16 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id; // 아이템 고유번호
 
-    private String name;
-    private String text;
-    private int price;
-    private boolean isSoldout;
-    private int count;
-    private int stock;
+    private String name; // 상품이름
+
+    private int price; // 가격
+
+    private int stock; // 재고
+
+    private boolean isSoldout; // 판매여부
+
+    private int count; // 팔린 갯수
+
+    private String text; // 상품설명
 
 }
