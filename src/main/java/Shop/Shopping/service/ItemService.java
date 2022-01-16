@@ -19,14 +19,19 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    // 전체 상품목록 불러오기
+    // 전체 상품목록 조회
     public List<Item> itemList(){
         return itemRepository.findAll();
     }
 
-    // 특정 상품 조회하기
+    // 특정 상품 조회
     public Item itemView(Long id){
         return itemRepository.findById(id).get();
+    }
+
+    // 특정 상품 수정
+    public void itemUpdate(Item item){
+
     }
 
     // 특정 상품 삭제
