@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,8 +23,8 @@ public class ItemController {
 
     // 상품등록 처리
     @PostMapping("/item/writting")
-    public String itemWritting(Item item, Model model){
-        itemService.save(item);
+    public String itemWritting(Item item, Model model, MultipartFile file)throws Exception{
+        itemService.save(item, file);
         return "redirect:/main";
     }
 
@@ -45,7 +46,7 @@ public class ItemController {
 
     // 특정 상품정보 수정처리
     @PostMapping("/item/update/{id}")
-    public String itemUpdate(@PathVariable("id") Long id, Item item){
+    public String itemUpdate(@PathVariable("id") Long id, Item item, MultipartFile file) throws Exception{
         Item tempItem = itemService.itemView(id);
         tempItem.setName(item.getName());
         tempItem.setPrice(item.getPrice());
@@ -54,7 +55,7 @@ public class ItemController {
         tempItem.setCount(item.getCount());
         tempItem.setText(item.getText());
 
-        itemService.save(tempItem);
+        itemService.save(tempItem,file);
 
         return "redirect:/main";
     }

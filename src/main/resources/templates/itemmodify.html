@@ -20,7 +20,7 @@
 
         <div class="row g-5">
             <div class="col-md-7 col-lg-8 ">
-                <form th:action="@{/item/update/{id}(id=${item.id})}" method="post">
+                <form th:action="@{/item/update/{id}(id=${item.id})}" method="post" enctype="multipart/form-data">
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="name" class="form-label">상품명</label>
@@ -53,6 +53,11 @@
                             <div class="invalid-feedback">
                                 Text is empty.
                             </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="text" class="form-label">상품 이미지</label>
+                            <input type="file" class="form-control" id="file" name="file">
                         </div>
 
                     </div>
