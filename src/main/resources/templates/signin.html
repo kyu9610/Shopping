@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>로그인</title>
@@ -39,7 +39,7 @@
                                     <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                                 </div>
 
-                                <p class="mb-5 pb-lg-2" style="color: #393f81;">아이디가 없으신가요? <a href="signup"style="color: #393f81;">회원가입</a></p>
+                                <p class="mb-5 pb-lg-2" style="color: #393f81;">아이디가 없으신가요? <a th:href="@{/signup}"style="color: #393f81;">회원가입</a></p>
                                 <a href="#!" class="small text-muted">Terms of use.</a>
                                 <a href="#!" class="small text-muted">Privacy policy</a>
                             </form>
