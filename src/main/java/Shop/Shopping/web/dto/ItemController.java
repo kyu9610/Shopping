@@ -47,15 +47,7 @@ public class ItemController {
     // 특정 상품정보 수정처리
     @PostMapping("/item/update/{id}")
     public String itemUpdate(@PathVariable("id") Long id, Item item, MultipartFile file) throws Exception{
-        Item tempItem = itemService.itemView(id);
-        tempItem.setName(item.getName());
-        tempItem.setPrice(item.getPrice());
-        tempItem.setStock(item.getStock());
-        tempItem.setSoldout(item.isSoldout());
-        tempItem.setCount(item.getCount());
-        tempItem.setText(item.getText());
-
-        itemService.save(tempItem,file);
+        itemService.itemModify(item,id,file);
 
         return "redirect:/main";
     }

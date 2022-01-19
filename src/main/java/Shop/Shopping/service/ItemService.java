@@ -47,8 +47,24 @@ public class ItemService {
     }
 
     // 특정 상품 수정
-    public void itemUpdate(Item item){
+    public void itemModify(Item item, Long id, MultipartFile file)throws Exception{
+        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid + "_" + file.getOriginalFilename();
+        File saveFile = new File(projectPath,fileName);
+        file.transferTo(saveFile);
 
+        Item tempItem = itemRepository.findItemById(id);
+        tempItem.setName(item.getName());
+        tempItem.setPrice(item.getPrice());
+        tempItem.setStock(item.getStock());
+        //tempItem.setSoldout(item.isSoldout());
+        //tempItem.setCount(item.getCount());
+        tempItem.setText(item.getText());
+        tempItem.setFilename(fileName);
+        tempItem.setFilepath("/files/" + fileName);
+
+        itemRepository.save(tempItem);
     }
 
     // 특정 상품 삭제
