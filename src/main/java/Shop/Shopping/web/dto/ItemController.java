@@ -18,7 +18,7 @@ public class ItemController {
     // 상품등록 페이지
     @GetMapping("/item/write")
     public String itemWriteForm(){
-        return "itemwrite";
+        return "/seller/itemwrite";
     }
 
     // 상품등록 처리
@@ -33,7 +33,7 @@ public class ItemController {
     public String itemView(Long id,Model model){
         model.addAttribute("item",itemService.itemView(id));
 
-        return "itemview";
+        return "/seller/itemview";
     }
 
     // 특정 상품정보 수정
@@ -41,7 +41,7 @@ public class ItemController {
     public String itemModify(@PathVariable("id") Long id, Model model){
         model.addAttribute("item",itemService.itemView(id));
 
-        return "itemmodify";
+        return "/seller/itemmodify";
     }
 
     // 특정 상품정보 수정처리
