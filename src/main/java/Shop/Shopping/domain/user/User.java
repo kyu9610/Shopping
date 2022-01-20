@@ -24,7 +24,13 @@ public class User {
     private String password;
     private String name;
     private String email;
+
+    //주소
+    private String addr1;
+    private String addr2;
+    private String addr3;
     private String address; // 주소
+
     private String phone_number; // 핸드폰번호
     private String grade; // 등급
 

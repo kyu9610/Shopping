@@ -31,10 +31,9 @@ public class Item {
 
     private String text; // 상품설명
 
-    private String photo; // 상품사진
+    private String filename; // 상품 사진 파일이름
 
-    private String filename; //
+    private String filepath; // 상품 사진 파일경로
 
-    private String filepath; //
 
 }
