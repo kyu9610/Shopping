@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 @Controller
 public class UserPageController {
-    private UserPageService userPageService;
-    private ItemService itemService;
+    private final UserPageService userPageService;
+    private final ItemService itemService;
 
     // 유저페이지
     @GetMapping("/user/{id}")
     public String userPage(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
         if(principalDetails.getUser().getId() == id){
             model.addAttribute("user",userPageService.findUser(id));
-            return "user/userPage";
+            return "/user/page_user";
         }else{
             return "redirect:/main";
         }

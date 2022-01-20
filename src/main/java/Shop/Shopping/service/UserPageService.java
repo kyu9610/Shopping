@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class UserPageService {
     private final UserRepository userRepository;
 
-    public User findUser(int id){
+    public User findUser(Integer id){
         return userRepository.findById(id).get();
     }
 }
