@@ -34,8 +34,18 @@
                 </li>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link" href="#!">로그인</a></li>
-                <li class="nav-item"><a class="nav-link" href="/item/write">상품등록</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">로그아웃</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="Mynavbar" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
+                    <ul class="dropdown-menu" aria-labelledby="Mynavbar">
+                        <li><a class="dropdown-item" href="#!">내 정보</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="/item/write">상품 등록</a></li>
+                        <li><a class="dropdown-item" href="#!">등록한 상품</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">주문 조회</a></li>
+                    </ul>
+                </li>
             </ul>
             <form class="d-flex">
                 <button class="btn btn-outline-dark" type="submit">

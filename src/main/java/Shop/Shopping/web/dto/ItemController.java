@@ -1,8 +1,10 @@
 package Shop.Shopping.web.dto;
 
+import Shop.Shopping.config.auth.PrincipalDetails;
 import Shop.Shopping.domain.item.Item;
 import Shop.Shopping.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +30,21 @@ public class ItemController {
         return "redirect:/main";
     }
 
-    // 특정 상품정보 페이지
+    // 특정 상품정보 페이지 ( 비로그인 / 로그인구분 )
     @GetMapping("/item/view")
-    public String itemView(Long id,Model model){
-        model.addAttribute("item",itemService.itemView(id));
-
-        return "/seller/itemview";
+    public String itemView(Long id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        if (principalDetails == null) {
+            model.addAttribute("item", itemService.itemView(id));
+            return "/none/item_none";
+        } else if(principalDetails.getUser().getRole().equals("ROLE_ADMIN") || principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
+            model.addAttribute("user", principalDetails.getUser());
+            model.addAttribute("item", itemService.itemView(id));
+            return "/seller/itemview";
+        }else{
+            model.addAttribute("user", principalDetails.getUser());
+            model.addAttribute("item", itemService.itemView(id));
+            return "/user/itemview_user";
+        }
     }
 
     // 특정 상품정보 수정

@@ -21,7 +21,7 @@ public class ShopController {
     public String home(Model model){
         List<Item> itemList = itemService.itemList();
         model.addAttribute("itemlist",itemList);
-        return "main";
+        return "/none/main";
     }
 
     // 메인페이지 ( 로그인 유저 )
