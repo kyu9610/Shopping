@@ -25,9 +25,14 @@ public class ItemController {
 
     // 상품등록 처리
     @PostMapping("/item/writting")
-    public String itemWritting(Item item, Model model, MultipartFile file)throws Exception{
-        itemService.save(item, file);
-        return "redirect:/main";
+    public String itemWritting(Item item, Model model, MultipartFile file,@AuthenticationPrincipal PrincipalDetails principalDetails)throws Exception{
+        if(principalDetails.getUser().getRole().equals("ROLE_ADMIN") || principalDetails.getUser().getRole().equals("ROLE_SELLER")){
+            item.setUser(principalDetails.getUser());
+            itemService.save(item, file);
+            return "redirect:/main";
+        }else{
+            return "redirect:/main";
+        }
     }
 
     // 특정 상품정보 페이지 ( 비로그인 / 로그인구분 )

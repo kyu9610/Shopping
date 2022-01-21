@@ -2,11 +2,13 @@ package Shop.Shopping.service;
 
 import Shop.Shopping.domain.item.Item;
 import Shop.Shopping.domain.item.ItemRepository;
+import Shop.Shopping.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +46,20 @@ public class ItemService {
     // 특정 상품 조회
     public Item itemView(Long id){
         return itemRepository.findById(id).get();
+    }
+
+    // 특정 유저 상품 조회
+    public List<Item> userItemView(User user){
+        List<Item> itemList = itemRepository.findAll();
+        List<Item> tempList = new ArrayList<>();
+
+        for(Item item : itemList){
+            if(item.getUser() == user){
+                tempList.add(item);
+            }
+        }
+
+        return tempList;
     }
 
     // 특정 상품 수정
