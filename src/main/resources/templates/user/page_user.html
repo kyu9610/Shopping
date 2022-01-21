@@ -62,12 +62,15 @@
                 <img class="card-img-top mb-5 mb-md-0" src="/files/a.jpg" alt="..." />
             </div>
             <div class="col-md-6">
-                <h1 class="display-5 fw-bolder" th:text="${user.name}">user name</h1>
+                <h1 class="display-5 fw-bolder" th:text="${user.username}">username</h1>
                 <div class="fs-5 mb-5">
                     <span th:text="${user.role}">user role</span>
                 </div>
                 <div class="fs-5 mb-5">
                     <span th:text="${user.email}">user email</span>
+                </div>
+                <div class="fs-5 mb-5">
+                    <span th:text="${user.address}">user address</span>
                 </div>
                 <div class="fs-5 mb-5">
                     <span th:text="${user.phone_number}">user phone</span>

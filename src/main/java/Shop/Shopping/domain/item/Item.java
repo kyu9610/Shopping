@@ -1,11 +1,15 @@
 package Shop.Shopping.domain.item;
 
+import Shop.Shopping.domain.cart_item.Cart_item;
+import Shop.Shopping.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,5 +39,11 @@ public class Item {
 
     private String filepath; // 상품 사진 파일경로
 
+    // 판매자랑 연결
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    //@OneToMany(mappedBy = "item")
+    //private List<Cart_item> cart_items = new ArrayList<>();
 }
