@@ -21,12 +21,12 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    //@OneToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name="user_id")
-    //User user;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    User user;
 
-    //@OneToMany(fetch = FetchType.EAGER)
-    //private List<Cart_item> cart_items = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Cart_item> cart_items = new ArrayList<>();
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate createDate; // 날짜
@@ -34,5 +34,11 @@ public class Cart {
     @PrePersist
     public void createDate(){
         this.createDate = LocalDate.now();
+    }
+
+    public static Cart createCart(User user){
+        Cart cart = new Cart();
+        cart.user = user;
+        return cart;
     }
 }

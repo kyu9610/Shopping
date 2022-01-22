@@ -73,4 +73,11 @@ public class UserPageController {
         model.addAttribute("itemList",itemService.userItemView(tempUser));
         return "/seller/myitem_seller";
     }
+
+    // 내 장바구니 조회
+    @GetMapping("/user/{id}/cart")
+    public String myCartPage(@PathVariable("id") Integer id,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+        return "/cart/cart";
+    }
 }
