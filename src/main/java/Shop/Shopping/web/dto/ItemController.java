@@ -36,8 +36,8 @@ public class ItemController {
     }
 
     // 특정 상품정보 페이지 ( 비로그인 / 로그인구분 )
-    @GetMapping("/item/view")
-    public String itemView(Long id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    @GetMapping("/item/view/{id}")
+    public String itemView(@PathVariable Long id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         if (principalDetails == null) {
             model.addAttribute("item", itemService.itemView(id));
             return "/none/item_none";

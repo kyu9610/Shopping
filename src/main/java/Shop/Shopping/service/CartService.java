@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -40,5 +43,18 @@ public class CartService {
             cart_item.addCount(count);
         }
 
+    }
+
+    public List<Cart_item> userCartView(Cart cart){
+        List<Cart_item> cart_items = cart_itemRepository.findAll();
+        List<Cart_item> user_items = new ArrayList<>();
+
+        for(Cart_item cart_item : cart_items){
+            if(cart_item.getCart().getId() == cart.getId()){
+                user_items.add(cart_item);
+            }
+        }
+
+        return user_items;
     }
 }
