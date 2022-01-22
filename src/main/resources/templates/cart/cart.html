@@ -1,199 +1,173 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="fragments/configHeader"/>
-<body>
-<div th:replace="fragments/head"/>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>장바구니</title>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles.css" rel="stylesheet" />
 
-<div class="container">
-    <div class="titleContainer">
-        <h2>장바구니</h2>
-    </div>
-
-    <div class="cartContainer">
-        <table class="table">
-            <thead>
-            <th><input id="checkAll" type="checkbox"></th>
-            <th>이미지</th>
-            <th>상품정보</th>
-            <th>상품금액</th>
-            <th>수량</th>
-            <th>총 금액</th>
-            </thead>
-            <tbody th:each="cartLine: ${cartLineList}">
-            <tr>
-                <td class="checkBoxTd">
-                    <input type="checkbox" class="checkBox">
-                </td>
-                <td class="itemImageTd">
-                    <a th:href="@{/items/{itemId}(itemId=${cartLine.getItemId()})}">
-                        <img class="itemImage" th:src="@{${cartLine.itemImagePath}}" alt="">
-                    </a>
-                </td>
-                <td class="itemInfoTd">
-                    <a th:href="@{/items/{itemId}(itemId=${cartLine.getItemId()})}">
-                        <span th:text="${cartLine.getItemName()}"></span>
-                    </a>
-                </td>
-                <td class="itemPriceTd">
-                    <span th:text="${#numbers.formatInteger(cartLine.itemPrice, 3, 'COMMA')}"></span>
-                </td>
-                <td class="orderCountTd">
-                    <!-- itemId를 가져오기 위한 필드 -->
-                    <input class="itemId" type="text" style="display: none;" th:value="${cartLine.getItemId()}"
-                           th:name="itemId">
-                    <input class="orderCount" type="number" th:value="${cartLine.getOrderCount()}" th:min="1" th:max="${cartLine.stockQuantity}"
-                           th:name="orderCount">
-                    <button class="btn btn-light orderCountModifyBtn">
-                        변경
-                    </button>
-                    <button type="button" class="close removeCartItemBtn" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </td>
-                <td class="totalPriceTd">
-                    <span
-                            th:text="${#numbers.formatInteger(cartLine.itemPrice * cartLine.orderCount, 3, 'COMMA')}"></span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <button id="orderBtn" class="btn btn-primary">구매하기</button>
-    </div>
-</div>
-</body>
-</html>
-
-<style>
-    .titleContainer {
-        height: 10vh;
-        display: flex;
-        align-items: center;
-    }
-
-    .checkBoxTd {
-        max-width: 57px;
-    }
-
-    .checkBox {
-        height: 70px;
-    }
-
-    .itemImageTd {
-        max-width: 230px;
-        max-height: 230px;
-    }
-
-    .itemImage {
-        max-width: 100px;
-        max-height: 70px;
-    }
-
-    .itemInfoTd {
-        max-width: 347px;
-    }
-
-    .itemPriceTd {
-        max-width: 173px;
-        max-height: 100px;
-    }
-
-    .orderCountTd {
-        max-width: 65px;
-        max-height: 100px;
-    }
-
-    .orderCount {
-        max-width: 40px;
-    }
-
-    .totalPriceTd {
-        max-width: 173px;
-        max-height: 100px;
-    }
-</style>
-
-<script>
-    $(function () {
-        // 장바구니 수량변경 ====================
-        $(".orderCountModifyBtn").on("click", function () {
-            let itemId = $(this).parent().find(".itemId").val();
-            let newOrderCount = $(this).parent().find(".orderCount").val();
-
-            let formData = new FormData();
-            formData.append("itemId", itemId);
-            formData.append("orderCount", newOrderCount);
-
-            $.ajax({
-                url: '/carts',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'PUT',
-                success: function (data) {
-                    location.reload();
-                }
-            });
-        })
-
-        // 장바구니 삭제 요청 ====================
-        $(".removeCartItemBtn").on("click", function () {
-            let itemId = $(this).parent().find(".itemId").val();
-
-            $.ajax({
-                url: `/carts?itemId=${itemId}`,
-                type: 'DELETE',
-                success: function (data) {
-                    location.reload();
-                }
-            });
-        })
-
-        // 전체 체크박스 컨트롤 ===================
-        $("#checkAll").click(function(){
-            $('input:checkbox').not(this).prop('checked', this.checked);
-        });
-
-        // 주문 요청 폼생성 ====================
-        // 선택된 input dom을 만들어 반환
-        function getCartInputList() {
-            let trList = $("tr");
-            let cartInputList = "";
-
-            // tr의 첫번째 줄은 head 이므로 1번째 부터
-            for (let i = 1; i < trList.length; i++) {
-                // 체크된 아이템만 추가하도록
-                let isSelected = $(trList[i]).find(".checkBox").is(":checked");
-                if (isSelected) {
-                    let itemId = $(trList[i]).find(".orderCountTd .itemId").val();
-                    let orderCount = $(trList[i]).find(".orderCountTd .orderCount").val();
-
-                    let orderLineListIdx = i-1;
-                    cartInputList += "<input type='text' name='orderLineList["+ orderLineListIdx + "].itemId' value='" + itemId + "'>";
-                    cartInputList += "<input type='text' name='orderLineList["+ orderLineListIdx + "].orderCount' value='" + orderCount + "'>"
-                }
-            }
-
-            if (cartInputList.length == 0) {
-                throw alert("한 개 이상의 품목을 선택하세요.");
-            }
-
-            return cartInputList;
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
         }
 
-        // form 생성
-        $("#orderBtn").on("click", function () {
-            let form = $("<form action='/orders' method='post' style='display: none'>" +
-                getCartInputList() +
-                "</form> ");
-            $("body").append(form);
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/main">쇼핑몰</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/main">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">All Products</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">로그아웃</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="Mynavbar" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
+                    <ul class="dropdown-menu" aria-labelledby="Mynavbar">
+                        <li><a class="dropdown-item" th:href="@{/user/{id}(id=${user.id})}">내 정보</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="/item/write">상품 등록</a></li>
+                        <li><a class="dropdown-item" th:href="@{/user/{id}/item(id=${user.id})}">등록한 상품</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">주문 조회</a></li>
+                    </ul>
+                </li>
+                <!--                <li class="nav-item"><a class="nav-link" th:href="@{/user/{id}(id=${user.id})}">마이페이지</a></li>-->
+            </ul>
+            <form class="d-flex">
+                <a class="btn btn-outline-dark" th:href="@{/user/{id}/cart(id=${user.id})}">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>
 
-            form.submit();
-        });
 
-    });
+<div class="container-fluid mt-3">
+    <div class="row">
+
+        <!-- SIDE BAR -->
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            장바구니
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file"></span>
+                            주문내역
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="shopping-cart"></span>
+                            분석
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2"></span>
+                            유저설정
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">장바구니</h1>
+            </div>
+
+            <!--            <tr th:each="cart_item : ${cartItems}">-->
+            <!--                <td th:text="${cart_item.getItem().getName()}">카트에 담긴 물품명</td><br>-->
+            <!--            </tr>-->
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">상품ID</th>
+                        <th scope="col">상품명</th>
+                        <th scope="col">수량</th>
+                        <th scope="col">가격</th>
+                        <th scope="col">담은날짜</th>
+                        <th scope="col">삭제</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="cart_item, i : ${cart_itemList}">
+                        <td th:text="${i.count}">1</td>
+                        <td th:text="${cart_item.getItem().getId()}">3번상품</td>
+                        <td th:text="${cart_item.getItem().getName()}">상품명</td>
+                        <td th:text="${cart_item.getCount()}">수량</td>
+                        <td th:text="${cart_item.getItem().getPrice() * cart_item.getCount()}">가격</td>
+                        <td th:text="${cart_item.getCreateDate()}">날짜</td>
+                        <td class="btn btn-outline-dark"><a th:href="@{/user/{id}/cart/{cart_itemId}/delete(id=${cart_item.getCart().getUser().id}, cart_itemId=${cart_item.getId()})}" style="text-decoration: none">삭제</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
 
 
-</script>
+
+<!--            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-3">-->
+<!--                <div class="col">-->
+<!--                    <div class="card mb-4 rounded-3 shadow-sm">-->
+<!--                        <div class="card-header py-3">-->
+<!--                            <h4 class="my-0 fw-normal">총 결제금액</h4>-->
+<!--                        </div>-->
+<!--                        <form class="card-body" th:action="@{/user/{id}/cart/checkout(id=${user.getId()})}" method="post">-->
+<!--                            <h1 class="card-title pricing-card-title" th:text="|${totalPrice} ₩|">$0</h1>-->
+<!--                            <ul class="list-unstyled mt-3 mb-4">-->
+<!--                                <li>잘못 담은 물건이 있는지 확인해보세요!</li>-->
+<!--                            </ul>-->
+<!--                            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">구매하기</button>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </main>
+    </div>
+</div>
+
+
+
+</body>
+</html>
