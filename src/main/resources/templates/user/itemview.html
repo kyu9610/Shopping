@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -34,15 +34,26 @@
                 </li>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link" href="/signin">로그인</a></li>
-                <li class="nav-item"><a class="nav-link" href="/signup">회원가입</a></li>
+                <li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" id="Mynavbar" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
+                    <ul class="dropdown-menu" aria-labelledby="Mynavbar">
+                        <li><a class="dropdown-item" th:href="@{/user/{id}(id=${user.id})}">내 정보</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">주문 조회</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" href="/item/write">상품 등록</a></li>
+                        <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" th:href="@{/user/{id}/item(id=${user.id})}">등록한 상품</a></li>
+                    </ul>
+                </li>
+                <!--                <li class="nav-item"><a class="nav-link" th:href="@{/user/{id}(id=${user.id})}">마이페이지</a></li>-->
             </ul>
             <form class="d-flex">
-                <button class="btn btn-outline-dark" type="submit">
+                <a class="btn btn-outline-dark" th:href="@{/user/{id}/cart(id=${user.id})}">
                     <i class="bi-cart-fill me-1"></i>
                     Cart
                     <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
+                </a>
             </form>
         </div>
     </div>
@@ -58,12 +69,22 @@
                     <span th:text="${item.price} + ' 원'">30,000 원</span>
                 </div>
                 <p class="lead" th:text="${item.text}">item text</p>
-                <div class="d-flex">
-                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
+
+                <form th:action="@{/user/{id}/cart/{itemId}(id=${user.id}, itemId=${item.id})}" method="post" class="d-flex">
+                    <input class="form-control text-center me-3" id="count" name="count" type="num" value="1"
+                           style="max-width: 3rem"/>
+                    <button class="btn btn-outline-dark flex-shrink-0" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Add to cart
                     </button>
+                </form>
+
+                <p></p>
+                <p></p>
+                <p></p>
+                <div class="footer" sec:authorize="hasRole('ROLE_SELLER')">
+                    <a th:href="@{/item/modify/{id}(id=${item.id})}" class="btn btn-dark">수정</a>
+                    <a th:href="@{/item/delete(id=${item.id})}" class="btn btn-dark">삭제</a>
                 </div>
             </div>
         </div>

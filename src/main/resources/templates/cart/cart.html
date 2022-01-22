@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -48,16 +48,16 @@
                 </li>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">로그아웃</a></li>
-                <li class="nav-item dropdown">
+                <li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" id="Mynavbar" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
                     <ul class="dropdown-menu" aria-labelledby="Mynavbar">
                         <li><a class="dropdown-item" th:href="@{/user/{id}(id=${user.id})}">내 정보</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/item/write">상품 등록</a></li>
-                        <li><a class="dropdown-item" th:href="@{/user/{id}/item(id=${user.id})}">등록한 상품</a></li>
-                        <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#!">주문 조회</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" href="/item/write">상품 등록</a></li>
+                        <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" th:href="@{/user/{id}/item(id=${user.id})}">등록한 상품</a></li>
                     </ul>
                 </li>
                 <!--                <li class="nav-item"><a class="nav-link" th:href="@{/user/{id}(id=${user.id})}">마이페이지</a></li>-->

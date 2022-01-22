@@ -17,11 +17,11 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/main">쇼핑몰</a>
+        <a class="navbar-brand" href="/">쇼핑몰</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/main">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -34,23 +34,16 @@
                 </li>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link" th:href="@{/logout}">로그아웃</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="Mynavbar" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
-                    <ul class="dropdown-menu" aria-labelledby="Mynavbar">
-                        <li><a class="dropdown-item" th:href="@{/user/{id}(id=${user.id})}">내 정보</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">주문 조회</a></li>
-                    </ul>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="/signin">로그인</a></li>
+                <li class="nav-item"><a class="nav-link" href="/signup">회원가입</a></li>
             </ul>
-            <form class="d-flex">
+            <a class="d-flex" href="/signin">
                 <button class="btn btn-outline-dark" type="submit">
                     <i class="bi-cart-fill me-1"></i>
                     Cart
                     <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                 </button>
-            </form>
+            </a>
         </div>
     </div>
 </nav>
@@ -58,29 +51,22 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" th:src="${item.filepath}" alt="..." /></div>
             <div class="col-md-6">
-                <img class="card-img-top mb-5 mb-md-0" src="/files/a.jpg" alt="..." />
-            </div>
-            <div class="col-md-6">
-                <h1 class="display-5 fw-bolder" th:text="${user.username}">username</h1>
+                <h1 class="display-5 fw-bolder" th:text="${item.name}">item name</h1>
                 <div class="fs-5 mb-5">
-                    <span th:text="${user.role}">user role</span>
+                    <span th:text="${item.price} + ' 원'">30,000 원</span>
                 </div>
-                <div class="fs-5 mb-5">
-                    <span th:text="${user.email}">user email</span>
-                </div>
-                <div class="fs-5 mb-5">
-                    <span th:text="${user.address}">user address</span>
-                </div>
-                <div class="fs-5 mb-5">
-                    <span th:text="${user.phone_number}">user phone</span>
-                </div>
-                <p></p>
-                <p></p>
-                <p></p>
-                <div class="footer">
-                    <a th:href="@{/user/modify/{id}(id=${user.id})}" class="btn btn-dark">수정하기</a>
-                </div>
+                <p class="lead" th:text="${item.text}">item text</p>
+
+                <a class="d-flex" href="/signin">
+                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
+                    <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
+                </a>
+
             </div>
         </div>
     </div>

@@ -31,13 +31,8 @@ public class UserPageController {
     @GetMapping("/user/{id}")
     public String userPage(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
         if(principalDetails.getUser().getId() == id){
-            if(principalDetails.getUser().getRole().equals("ROLE_ADMIN") || principalDetails.getUser().getRole().equals("ROLE_SELLER")){
-                model.addAttribute("user",userPageService.findUser(id));
-                return "/seller/page_seller";
-            }else{
-                model.addAttribute("user",userPageService.findUser(id));
-                return "/user/page_user";
-            }
+            model.addAttribute("user",userPageService.findUser(id));
+            return "/user/mypage";
         }else{
             return "redirect:/main";
         }
@@ -48,7 +43,7 @@ public class UserPageController {
     public String userModify(@PathVariable("id") Integer id, Model model){
         model.addAttribute("user",userPageService.findUser(id));
 
-        return "useredit";
+        return "/user/useredit";
     }
 
     // 유저 정보수정 처리
@@ -75,7 +70,7 @@ public class UserPageController {
 
         model.addAttribute("user",userPageService.findUser(id));
         model.addAttribute("itemList",itemService.userItemView(tempUser));
-        return "/seller/myitem_seller";
+        return "/user/myitem";
     }
 
     // 내 장바구니 조회

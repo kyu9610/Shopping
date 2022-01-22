@@ -27,17 +27,10 @@ public class ShopController {
     // 메인페이지 ( 로그인 유저 )
     @GetMapping("/main")
     public String main(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        if(principalDetails.getUser().getRole().equals("ROLE_ADMIN") || principalDetails.getUser().getRole().equals("ROLE_SELLER")){
-            List<Item> itemList = itemService.itemList();
-            model.addAttribute("itemlist",itemList);
-            model.addAttribute("user",principalDetails.getUser());
-            return "/seller/main_seller";
-        }else{
-            List<Item> itemList = itemService.itemList();
-            model.addAttribute("itemlist",itemList);
-            model.addAttribute("user",principalDetails.getUser());
-            return "/user/main_user";
-        }
+        List<Item> itemList = itemService.itemList();
+        model.addAttribute("itemlist",itemList);
+        model.addAttribute("user",principalDetails.getUser());
+        return "/user/main";
     }
 
 
