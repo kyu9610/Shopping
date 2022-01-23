@@ -11,6 +11,7 @@ import Shop.Shopping.service.ItemService;
 import Shop.Shopping.service.UserPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,5 +102,13 @@ public class UserPageController {
         cartService.addCart(user,item,count);
 
         return "redirect:/item/view/{itemId}";
+    }
+
+    // 특정 상품을 장바구니에서 삭제
+    @GetMapping("/user/{id}/cart/{cart_itemId}/delete")
+    public String myCartDelete(@PathVariable("id") Integer id, @PathVariable("cart_itemId") int cart_itemId){
+        cartService.cartItemDelete(cart_itemId);
+
+        return "redirect:/user/{id}/cart";
     }
 }
