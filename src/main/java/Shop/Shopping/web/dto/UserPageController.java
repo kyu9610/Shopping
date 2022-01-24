@@ -122,7 +122,8 @@ public class UserPageController {
     // 결제 페이지
     @PostMapping("/user/{id}/cart/checkout")
     public String myCartPayment(@PathVariable("id") Integer id, Model model){
-        cartService.cartDelete(id);
+        cartService.cartDelete(id); // 장바구니 비우기
+
         return "redirect:/main";
     }
 }

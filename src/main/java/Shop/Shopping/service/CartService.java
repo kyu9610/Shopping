@@ -21,6 +21,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final Cart_itemRepository cart_itemRepository;
 
+
     public void createCart(User user){
         Cart cart = Cart.createCart(user);
         cartRepository.save(cart);
@@ -78,6 +79,9 @@ public class CartService {
         // 반복문을 이용하여 접속 User의 Cart_item 만 찾아서 삭제
         for(Cart_item cart_item : cart_items){
             if(cart_item.getCart().getUser().getId() == id){
+                int stock = cart_item.getItem().getStock();
+                stock = stock - cart_item.getCount();
+                cart_item.getItem().setStock(stock);
                 cart_item.getCart().setCount(cart_item.getCart().getCount() - 1);
                 cart_itemRepository.deleteById(cart_item.getId());
             }

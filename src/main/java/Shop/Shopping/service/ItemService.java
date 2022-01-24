@@ -1,5 +1,6 @@
 package Shop.Shopping.service;
 
+import Shop.Shopping.domain.cart_item.Cart_itemRepository;
 import Shop.Shopping.domain.item.Item;
 import Shop.Shopping.domain.item.ItemRepository;
 import Shop.Shopping.domain.user.User;
@@ -87,4 +88,5 @@ public class ItemService {
     public void itemDelete(Long id){
         itemRepository.deleteById(id);
     }
+
 }
