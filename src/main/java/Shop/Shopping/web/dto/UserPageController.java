@@ -81,6 +81,7 @@ public class UserPageController {
             // User의 장바구니를 가져온다.
             Cart cart = principalDetails.getUser().getCart();
             // 장바구니의 아이템을 가져온다.
+
             List<Cart_item> cart_items = cartService.userCartView(cart);
 
             int totalPrice = 0;
@@ -111,9 +112,17 @@ public class UserPageController {
 
     // 특정 상품을 장바구니에서 삭제
     @GetMapping("/user/{id}/cart/{cart_itemId}/delete")
-    public String myCartDelete(@PathVariable("id") Integer id, @PathVariable("cart_itemId") int cart_itemId){
+    public String myCartDelete(@PathVariable("id") Integer id, @PathVariable("cart_itemId") int cart_itemId, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        principalDetails.getUser().getCart().setCount(principalDetails.getUser().getCart().getCount() - 1);
         cartService.cartItemDelete(cart_itemId);
 
         return "redirect:/user/{id}/cart";
+    }
+
+    // 결제 페이지
+    @PostMapping("/user/{id}/cart/checkout")
+    public String myCartPayment(@PathVariable("id") Integer id, Model model){
+        cartService.cartDelete(id);
+        return "redirect:/main";
     }
 }

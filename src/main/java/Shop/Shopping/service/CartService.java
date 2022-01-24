@@ -21,6 +21,11 @@ public class CartService {
     private final CartRepository cartRepository;
     private final Cart_itemRepository cart_itemRepository;
 
+    public void createCart(User user){
+        Cart cart = Cart.createCart(user);
+        cartRepository.save(cart);
+    }
+
     // 장바구니 생성
     public void addCart(User user, Item item, int count){
 
@@ -65,4 +70,18 @@ public class CartService {
     public void cartItemDelete(int id){
         cart_itemRepository.deleteById(id);
     }
+
+    // 장바구니 아이템 전체 삭제
+    public void cartDelete(int id){
+        List<Cart_item> cart_items = cart_itemRepository.findAll(); // 전체 cart_item 찾기
+
+        // 반복문을 이용하여 접속 User의 Cart_item 만 찾아서 삭제
+        for(Cart_item cart_item : cart_items){
+            if(cart_item.getCart().getUser().getId() == id){
+                cart_item.getCart().setCount(cart_item.getCart().getCount() - 1);
+                cart_itemRepository.deleteById(cart_item.getId());
+            }
+        }
+    }
+
 }

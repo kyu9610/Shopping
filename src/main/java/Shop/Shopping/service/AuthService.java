@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 @Service
 public class AuthService {
     private final UserRepository userRepository;
+    private final CartService cartService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional // Write(Insert, Update, Delete)
@@ -22,6 +23,7 @@ public class AuthService {
         user.setRole("ROLE_USER"); // 기본 user 권한
 
         User userEntity = userRepository.save(user);
+        cartService.createCart(user);
         return userEntity;
     }
 

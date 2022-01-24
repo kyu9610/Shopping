@@ -67,7 +67,7 @@
                 <a class="btn btn-outline-dark" th:href="@{/user/{id}/cart(id=${user.id})}">
                     <i class="bi-cart-fill me-1"></i>
                     Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${user.cart.count}">0</span>
                 </a>
             </form>
         </div>
@@ -135,7 +135,10 @@
                     <tr th:each="cart_item, i : ${cart_itemList}">
                         <td th:text="${i.count}">1</td>
                         <td th:text="${cart_item.getItem().getId()}">3번상품</td>
-                        <td th:text="${cart_item.getItem().getName()}">상품명</td>
+                        <td>
+                            <a th:href="@{/item/view/{id}(id=${cart_item.item.id})}"
+                               th:text="${cart_item.getItem().getName()}"></a>
+                        </td>
                         <td th:text="${cart_item.getCount()}">수량</td>
                         <td th:text="${cart_item.getItem().getPrice() * cart_item.getCount()}">가격</td>
                         <td th:text="${cart_item.getCreateDate()}">날짜</td>
