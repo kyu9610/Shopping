@@ -32,6 +32,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><h5 class="nav-link" sec:authorize="isAuthenticated()" th:text="${user.username} + '님'">Username</h5></li>
                 <li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle" id="Mynavbar" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
@@ -50,6 +51,7 @@
                 <a class="btn btn-outline-dark" th:href="@{/user/{id}/cart(id=${user.id})}">
                     <i class="bi-cart-fill me-1"></i>
                     Cart
+<!--                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${user.cart.count}">0</span>-->
                     <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                 </a>
             </form>

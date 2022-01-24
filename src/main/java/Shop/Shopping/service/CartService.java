@@ -21,6 +21,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final Cart_itemRepository cart_itemRepository;
 
+    // 장바구니 생성
     public void addCart(User user, Item item, int count){
 
         Cart cart = cartRepository.findByUserId(user.getId());
@@ -38,6 +39,7 @@ public class CartService {
         if(cart_item == null){
             cart_item = Cart_item.createCartItem(cart,item,count);
             cart_itemRepository.save(cart_item);
+            cart.setCount(cart.getCount() + 1);
         }else{
             // 비어있지 않다면 그만큼 갯수를 추가.
             cart_item.addCount(count);
@@ -45,6 +47,7 @@ public class CartService {
 
     }
 
+    // 장바구니 조회
     public List<Cart_item> userCartView(Cart cart){
         List<Cart_item> cart_items = cart_itemRepository.findAll();
         List<Cart_item> user_items = new ArrayList<>();
@@ -58,6 +61,7 @@ public class CartService {
         return user_items;
     }
 
+    // 장바구니 특정 아이템 삭제
     public void cartItemDelete(int id){
         cart_itemRepository.deleteById(id);
     }

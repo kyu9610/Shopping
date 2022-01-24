@@ -11,7 +11,6 @@ import Shop.Shopping.service.ItemService;
 import Shop.Shopping.service.UserPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,7 +83,13 @@ public class UserPageController {
             // 장바구니의 아이템을 가져온다.
             List<Cart_item> cart_items = cartService.userCartView(cart);
 
+            int totalPrice = 0;
+            for(Cart_item cart_item : cart_items){
+                totalPrice += ( cart_item.getItem().getPrice() * cart_item.getCount());
+            }
+
             model.addAttribute("cart_itemList",cart_items);
+            model.addAttribute("totalPrice",totalPrice);
             model.addAttribute("user",userPageService.findUser(id));
 
             return "/cart/cart";

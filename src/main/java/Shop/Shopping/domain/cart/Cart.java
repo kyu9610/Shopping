@@ -21,6 +21,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private int count; // 카트에 담긴 상품 개수
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     User user;
@@ -39,6 +41,8 @@ public class Cart {
     public static Cart createCart(User user){
         Cart cart = new Cart();
         cart.user = user;
+        cart.count = 0;
+
         return cart;
     }
 }

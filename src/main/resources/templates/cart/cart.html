@@ -48,6 +48,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><h5 class="nav-link" sec:authorize="isAuthenticated()" th:text="${user.username} + '님'">Username</h5></li>
                 <li class="nav-item"><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" id="Mynavbar" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
@@ -147,22 +148,22 @@
 
 
 
-<!--            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-3">-->
-<!--                <div class="col">-->
-<!--                    <div class="card mb-4 rounded-3 shadow-sm">-->
-<!--                        <div class="card-header py-3">-->
-<!--                            <h4 class="my-0 fw-normal">총 결제금액</h4>-->
-<!--                        </div>-->
-<!--                        <form class="card-body" th:action="@{/user/{id}/cart/checkout(id=${user.getId()})}" method="post">-->
-<!--                            <h1 class="card-title pricing-card-title" th:text="|${totalPrice} ₩|">$0</h1>-->
-<!--                            <ul class="list-unstyled mt-3 mb-4">-->
-<!--                                <li>잘못 담은 물건이 있는지 확인해보세요!</li>-->
-<!--                            </ul>-->
-<!--                            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">구매하기</button>-->
-<!--                        </form>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-3">
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">총 결제금액</h4>
+                        </div>
+                        <form class="card-body" th:action="@{/user/{id}/cart/checkout(id=${user.getId()})}" method="post">
+                            <h1 class="card-title pricing-card-title" th:text="${totalPrice} + '₩'">$0</h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>잘못 담은 물건이 있는지 확인해보세요!</li>
+                            </ul>
+                            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">구매하기</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </div>
