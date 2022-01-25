@@ -12,6 +12,7 @@ import Shop.Shopping.service.UserPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -120,8 +121,10 @@ public class UserPageController {
     }
 
     // 결제 페이지
+    @Transactional
     @PostMapping("/user/{id}/cart/checkout")
     public String myCartPayment(@PathVariable("id") Integer id, Model model){
+        cartService.cartPayment(id); // 결제처리
         cartService.cartDelete(id); // 장바구니 비우기
 
         return "redirect:/main";

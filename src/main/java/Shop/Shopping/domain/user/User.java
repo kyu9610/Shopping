@@ -28,6 +28,7 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private int money;
 
     //주소
     private String addr1;
@@ -42,8 +43,6 @@ public class User {
 
     private LocalDateTime createDate; // 날짜
 
-    int money; // 현재 가진 금액
-
     // Item 과 연결
     @OneToMany(mappedBy = "user")
     private List<Item> items = new ArrayList<>();
@@ -55,4 +54,9 @@ public class User {
     public void createDate() {
         this.createDate = LocalDateTime.now();
     }
+
+    public void setMoney(int count){
+        this.money = this.money + count;
+    }
+
 }

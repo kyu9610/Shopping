@@ -30,7 +30,6 @@ public class AuthController {
         User user = signupDto.toEntity();
 
         User userEntity = authService.signup(user);
-        System.out.println(userEntity);
 
         return "signin"; //
     }
