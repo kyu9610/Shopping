@@ -42,6 +42,8 @@ public class User {
 
     private LocalDateTime createDate; // 날짜
 
+    int money; // 현재 가진 금액
+
     // Item 과 연결
     @OneToMany(mappedBy = "user")
     private List<Item> items = new ArrayList<>();

@@ -21,6 +21,7 @@ public class AuthService {
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         user.setRole("ROLE_USER"); // 기본 user 권한
+        user.setMoney(0); // 기본 잔액 0 으로 초기화
 
         User userEntity = userRepository.save(user);
         cartService.createCart(user);
