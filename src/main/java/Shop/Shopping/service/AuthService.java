@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 public class AuthService {
     private final UserRepository userRepository;
     private final CartService cartService;
+    private final OrderService orderService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional // Write(Insert, Update, Delete)
@@ -24,6 +25,8 @@ public class AuthService {
 
         User userEntity = userRepository.save(user);
         cartService.createCart(user);
+        orderService.createOrder(user);
+
         return userEntity;
     }
 

@@ -22,6 +22,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final Cart_itemRepository cart_itemRepository;
     private final UserRepository userRepository;
+    private final OrderService orderService;
 
     public void createCart(User user){
         Cart cart = Cart.createCart(user);
@@ -89,23 +90,31 @@ public class CartService {
     // 장바구니 결제
     public void cartPayment(int id){
         List<Cart_item> cart_items = cart_itemRepository.findAll(); // 전체 cart_item 찾기
+        List<Cart_item> userCart_items = new ArrayList<>();
         User buyer = userRepository.findById(id).get();
 
-        // 반복문을 이용하여 접속 User의 Cart_item 만 찾아서 삭제
+        // 반복문을 이용하여 접속 User의 Cart_item만 찾아서 저장
         for(Cart_item cart_item : cart_items){
             if(cart_item.getCart().getUser().getId() == buyer.getId()){
-                // 재고 변경
-                int stock = cart_item.getItem().getStock(); // 현재 재고를 변수에 저장
-                stock = stock - cart_item.getCount(); // 저장된 변수를 결제한 갯수만큼 빼준다
-                cart_item.getItem().setStock(stock); // 재고갯수 변경
+                userCart_items.add(cart_item);
+            }
+        }
 
-                // 금액 처리
-                if(buyer.getMoney() >= cart_item.getItem().getPrice()){
-                    User seller = cart_item.getItem().getUser();
-                    int cash = cart_item.getItem().getPrice(); // 아이템 가격을 변수에 저장
-                    buyer.setMoney(cash * -1);
-                    seller.setMoney(cash);
-                }
+        orderService.order(buyer,userCart_items);
+
+        // 반복문을 이용하여 접속 User의 Cart_item 만 찾아서 삭제
+        for(Cart_item cart_item : userCart_items){
+            // 재고 변경
+            int stock = cart_item.getItem().getStock(); // 현재 재고를 변수에 저장
+            stock = stock - cart_item.getCount(); // 저장된 변수를 결제한 갯수만큼 빼준다
+            cart_item.getItem().setStock(stock); // 재고갯수 변경
+
+            // 금액 처리
+            if(buyer.getMoney() >= cart_item.getItem().getPrice()){
+                User seller = cart_item.getItem().getUser();
+                int cash = cart_item.getItem().getPrice(); // 아이템 가격을 변수에 저장
+                buyer.setMoney(cash * -1);
+                seller.setMoney(cash);
             }
         }
     }

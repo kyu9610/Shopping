@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>장바구니</title>
+    <title>주문내역</title>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -47,7 +47,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/user/{id}/order(id=${user.id})}">
+                        <a class="nav-link" href="#">
                             <span data-feather="file"></span>
                             주문내역
                         </a>
@@ -70,61 +70,42 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">장바구니</h1>
+                <h1 class="h2">주문내역</h1>
             </div>
 
-            <!--            <tr th:each="cart_item : ${cartItems}">-->
-            <!--                <td th:text="${cart_item.getItem().getName()}">카트에 담긴 물품명</td><br>-->
-            <!--            </tr>-->
-            <div class="table-responsive">
+            <div class="table-responsive" th:each="order : ${orderList}">
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
-                        <th scope="col">번호</th>
-                        <th scope="col">상품ID</th>
+                        <th scope="col">#</th>
                         <th scope="col">상품명</th>
                         <th scope="col">수량</th>
                         <th scope="col">가격</th>
-                        <th scope="col">담은날짜</th>
-                        <th scope="col">삭제</th>
+                        <th scope="col">합계</th>
                     </tr>
+
                     </thead>
                     <tbody>
-                    <tr th:each="cart_item, i : ${cart_itemList}">
-                        <td th:text="${i.count}">1</td>
-                        <td th:text="${cart_item.getItem().getId()}">3번상품</td>
+                    <tr th:each="item : ${order.order_items}">
+                        <td th:text="${item.id}">아이템번호</td>
                         <td>
-                            <a th:href="@{/item/view/{id}(id=${cart_item.item.id})}"
-                               th:text="${cart_item.getItem().getName()}"></a>
+                            <a th:href="@{/item/view/{id}(id=${item.item.id})}"
+                               th:text="${item.item.name}"></a>
                         </td>
-                        <td th:text="${cart_item.getCount()}">수량</td>
-                        <td th:text="${cart_item.getItem().getPrice() * cart_item.getCount()}">가격</td>
-                        <td th:text="${cart_item.getCreateDate()}">날짜</td>
-                        <td class="btn btn-outline-dark"><a th:href="@{/user/{id}/cart/{cart_itemId}/delete(id=${cart_item.getCart().getUser().id}, cart_itemId=${cart_item.getId()})}" style="text-decoration: none">삭제</a></td>
+                        <td th:text="${item.getCount()}">수량</td>
+                        <td th:text="${item.price}">가격</td>
+                        <td th:text="${item.price * item.count}">합계</td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td  colspan="4"></td>
+                            <td th:text="${order.price}"> 총 가격</td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <hr>
-
-
-
-            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center mt-3">
-                <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">총 결제금액</h4>
-                        </div>
-                        <form class="card-body" th:action="@{/user/{id}/cart/checkout(id=${user.getId()})}" method="post">
-                            <h1 class="card-title pricing-card-title" th:text="${totalPrice} + '₩'">$0</h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>잘못 담은 물건이 있는지 확인해보세요!</li>
-                            </ul>
-                            <button type="submit" class="w-100 btn btn-lg btn-outline-primary">구매하기</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
 </div>

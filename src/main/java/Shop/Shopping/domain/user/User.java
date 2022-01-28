@@ -39,7 +39,6 @@ public class User {
 
     private String phone_number; // 핸드폰번호
     private String grade; // 등급
-
     private String role; // 권한
 
     private LocalDateTime createDate; // 날짜

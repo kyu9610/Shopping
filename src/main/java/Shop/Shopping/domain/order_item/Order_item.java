@@ -23,7 +23,7 @@ public class Order_item {
 
     private int price; // 금액
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private Order order; // 주문 연결
 
@@ -33,4 +33,14 @@ public class Order_item {
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     LocalDate createDate; // 날짜
+
+    public static Order_item createOrderItem(Item item, int count){
+
+        Order_item order_item = new Order_item();
+        order_item.setItem(item);
+        order_item.setCount(count);
+        order_item.setPrice(item.getPrice());
+
+        return order_item;
+    }
 }

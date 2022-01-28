@@ -4,6 +4,7 @@ import Shop.Shopping.config.auth.PrincipalDetails;
 import Shop.Shopping.domain.cart.Cart;
 import Shop.Shopping.domain.cart_item.Cart_item;
 import Shop.Shopping.domain.item.Item;
+import Shop.Shopping.domain.order.Order;
 import Shop.Shopping.domain.user.User;
 import Shop.Shopping.service.AuthService;
 import Shop.Shopping.service.CartService;
@@ -128,5 +129,28 @@ public class UserPageController {
         cartService.cartDelete(id); // 장바구니 비우기
 
         return "redirect:/main";
+    }
+
+    // 내 주문내역 조회
+    @Transactional
+    @GetMapping("/user/{id}/order")
+    public String myOrderPage(@PathVariable("id") Integer id,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        // 로그인 User == 접속 User
+        if(principalDetails.getUser().getId() == id){
+            // User의 주문내역을 가져온다.
+            User user = userPageService.findUser(id);
+            List<Order> orderList = user.getOrders();
+
+            for(Order order : orderList){
+                System.out.println(order.getId());
+            }
+
+            model.addAttribute("orderList",orderList);
+            model.addAttribute("user",user);
+
+            return "/user/order";
+        }else{
+            return "redirect:/main";
+        }
     }
 }
