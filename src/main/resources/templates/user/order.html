@@ -37,43 +37,8 @@
     <div class="row">
 
         <!-- SIDE BAR -->
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/user/{id}(id=${user.id})}">
-                            <span data-feather="mypage"></span>
-                            내 정보
-                        </a>
-                    </li>
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" th:replace="/fragment/navigation :: side(${user})">
 
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/user/{id}/cart(id=${user.id})}" sec:authorize="hasRole('ROLE_USER')">
-                            <span data-feather="cart"></span>
-                            장바구니
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/user/{id}/order(id=${user.id})}" sec:authorize="hasRole('ROLE_USER')">
-                            <span data-feather="order"></span>
-                            주문내역
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/item/write" sec:authorize="hasRole('ROLE_SELLER')">
-                            <span data-feather="itemwrite"></span>
-                            상품 등록
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/user/{id}/item(id=${user.id})}" sec:authorize="hasRole('ROLE_SELLER')">
-                            <span data-feather="myitem"></span>
-                            등록한 상품
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -82,8 +47,14 @@
             </div>
 
             <div class="table-responsive" th:each="order : ${orderList}">
-                <table class="table table-striped table-sm">
-                    <thead>
+                <h4>
+                    <span th:text="'주문날짜 : ' + ${order.getCreateDate()}"></span>
+                    <span class="badge bg-primary" th:text="${order.status}" th:if="${order.status == '주문 완료'}">주문 완료</span>
+                    <span class="badge bg-success" th:text="${order.status}" th:if="${order.status == '배송 완료'}">주문 완료</span>
+                    <span class="badge bg-danger" th:text="${order.status}" th:if="${order.status == '환불중'}">주문 완료</span>
+                </h4>
+                <table class="table">
+                    <thead class="bg-light">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">상품명</th>

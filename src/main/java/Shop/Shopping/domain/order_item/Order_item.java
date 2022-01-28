@@ -31,9 +31,6 @@ public class Order_item {
     @JoinColumn(name = "item_id")
     private Item item; // 아이템 연결
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    LocalDate createDate; // 날짜
-
     public static Order_item createOrderItem(Item item, int count){
 
         Order_item order_item = new Order_item();

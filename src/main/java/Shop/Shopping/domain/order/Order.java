@@ -1,14 +1,12 @@
 package Shop.Shopping.domain.order;
 
-import Shop.Shopping.domain.cart.Cart;
 import Shop.Shopping.domain.order_item.Order_item;
 import Shop.Shopping.domain.user.User;
 import lombok.*;
-import org.apache.tomcat.jni.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +33,8 @@ public class Order {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Order_item> order_items = new ArrayList<>();
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDate createDate; // 날짜
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    private LocalDateTime createDate; // 날짜
 
     public void addOrderItem(Order_item order_item){
         order_items.add(order_item);
@@ -50,7 +48,7 @@ public class Order {
             order.addOrderItem(order_item);
         }
         order.setStatus("주문 완료");
-        order.setCreateDate(LocalDate.now());
+        order.setCreateDate(LocalDateTime.now());
         return order;
     }
 

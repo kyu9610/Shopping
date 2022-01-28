@@ -58,7 +58,7 @@ public class UserPageController {
         tempUser.setAddr1(user.getAddr1());
         tempUser.setAddr2(user.getAddr2());
         tempUser.setAddr3(user.getAddr3());
-        tempUser.setAddress(user.getAddr2()+user.getAddr3());
+        tempUser.setAddress(user.getAddr2() + ' ' + user.getAddr3());
 
         authService.userUpdate(tempUser);
 
@@ -128,7 +128,7 @@ public class UserPageController {
         cartService.cartPayment(id); // 결제처리
         cartService.cartDelete(id); // 장바구니 비우기
 
-        return "redirect:/main";
+        return "redirect:/user/{id}/order";
     }
 
     // 내 주문내역 조회
@@ -140,10 +140,6 @@ public class UserPageController {
             // User의 주문내역을 가져온다.
             User user = userPageService.findUser(id);
             List<Order> orderList = user.getOrders();
-
-            for(Order order : orderList){
-                System.out.println(order.getId());
-            }
 
             model.addAttribute("orderList",orderList);
             model.addAttribute("user",user);
