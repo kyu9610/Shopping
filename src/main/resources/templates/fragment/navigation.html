@@ -41,7 +41,7 @@
                     <ul class="dropdown-menu" aria-labelledby="Mynavbar">
                         <li><a class="dropdown-item" th:href="@{/user/{id}(id=${user.id})}">내 정보</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">주문 조회</a></li>
+                        <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}/order(id=${user.id})}">주문 내역</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" href="/item/write">상품 등록</a></li>
                         <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" th:href="@{/user/{id}/item(id=${user.id})}">등록한 상품</a></li>
@@ -50,7 +50,7 @@
             </ul>
             <form class="d-flex">
                 <a class="btn btn-outline-dark" href="/main" th:text="'현재 잔액 : ' + ${user.money} + '₩'"></a>
-                <a class="btn btn-outline-dark" th:href="@{/user/{id}/cart(id=${user.id})}">
+                <a class="btn btn-outline-dark" sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}/cart(id=${user.id})}">
                     <i class="bi-cart-fill me-1"></i>
                     Cart
                     <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${user.cart.count}">0</span>

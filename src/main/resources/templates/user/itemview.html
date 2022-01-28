@@ -20,7 +20,7 @@
                 <p class="lead" th:text="'재고 : ' + ${item.stock}">item stock</p>
                 <p class="lead" th:text="${item.text}">item text</p>
 
-                <form th:action="@{/user/{id}/cart/{itemId}(id=${user.id}, itemId=${item.id})}" method="post" class="d-flex">
+                <form sec:authorize="hasRole('ROLE_USER')" th:action="@{/user/{id}/cart/{itemId}(id=${user.id}, itemId=${item.id})}" method="post" class="d-flex">
                     <input class="form-control text-center me-3" id="count" name="count" type="num" value="1"
                            style="max-width: 3rem"/>
                     <button class="btn btn-outline-dark flex-shrink-0" type="submit">

@@ -41,27 +41,35 @@
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <span data-feather="home"></span>
+                        <a class="nav-link" th:href="@{/user/{id}(id=${user.id})}">
+                            <span data-feather="mypage"></span>
+                            내 정보
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/user/{id}/cart(id=${user.id})}" sec:authorize="hasRole('ROLE_USER')">
+                            <span data-feather="cart"></span>
                             장바구니
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file"></span>
+                        <a class="nav-link" th:href="@{/user/{id}/order(id=${user.id})}" sec:authorize="hasRole('ROLE_USER')">
+                            <span data-feather="order"></span>
                             주문내역
                         </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="shopping-cart"></span>
-                            분석
+                        <a class="nav-link" href="/item/write" sec:authorize="hasRole('ROLE_SELLER')">
+                            <span data-feather="itemwrite"></span>
+                            상품 등록
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="bar-chart-2"></span>
-                            유저설정
+                        <a class="nav-link" th:href="@{/user/{id}/item(id=${user.id})}" sec:authorize="hasRole('ROLE_SELLER')">
+                            <span data-feather="myitem"></span>
+                            등록한 상품
                         </a>
                     </li>
                 </ul>
@@ -109,8 +117,9 @@
         </main>
     </div>
 </div>
-
-
-
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
 </body>
 </html>
