@@ -32,6 +32,7 @@
                             <h5 class="fw-bolder" th:text="${item.name}">item name</h5>
                             <!-- Product price-->
                             <h6 th:text="${item.price} + ' 원'">30,000</h6>
+                            <h6 th:if="${user.id} == ${item.user.id}">★</h6>
                         </div>
                     </div>
                     <!-- Product actions-->
