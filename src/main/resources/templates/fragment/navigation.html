@@ -45,6 +45,7 @@
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" href="/item/write">상품 등록</a></li>
                         <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" th:href="@{/user/{id}/item(id=${user.id})}">등록한 상품</a></li>
+                        <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" th:href="@{/user/{id}/sale(id=${user.id})}">판매 현황</a></li>
                     </ul>
                 <!--                <li class="nav-item"><a class="nav-link" th:href="@{/user/{id}(id=${user.id})}">마이페이지</a></li>-->
             </ul>
@@ -94,6 +95,12 @@
                 <a class="nav-link" th:href="@{/user/{id}/item(id=${user.id})}" sec:authorize="hasRole('ROLE_SELLER')">
                     <span data-feather="myitem"></span>
                     등록한 상품
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/{id}/sale(id=${user.id})}" sec:authorize="hasRole('ROLE_SELLER')">
+                    <span data-feather="sale"></span>
+                    판매 현황
                 </a>
             </li>
         </ul>

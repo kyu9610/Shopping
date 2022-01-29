@@ -42,4 +42,22 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    // 전체 주문 조회
+    public List<Order> orderList(){
+        return orderRepository.findAll();
+    }
+
+    // 특정 주문 조회
+    public Order orderView(Integer id){
+        return orderRepository.findById(id).get();
+    }
+
+    // 주문 수정
+    public void orderUpdate(Integer id, Order order){
+        Order tempOrder = orderRepository.findById(id).get();
+        tempOrder.setStatus(order.getStatus());
+
+        orderRepository.save(tempOrder);
+    }
+
 }

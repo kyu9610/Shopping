@@ -5,11 +5,9 @@ import Shop.Shopping.domain.cart.Cart;
 import Shop.Shopping.domain.cart_item.Cart_item;
 import Shop.Shopping.domain.item.Item;
 import Shop.Shopping.domain.order.Order;
+import Shop.Shopping.domain.order_item.Order_item;
 import Shop.Shopping.domain.user.User;
-import Shop.Shopping.service.AuthService;
-import Shop.Shopping.service.CartService;
-import Shop.Shopping.service.ItemService;
-import Shop.Shopping.service.UserPageService;
+import Shop.Shopping.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,6 +27,7 @@ public class UserPageController {
     private final ItemService itemService;
     private final CartService cartService;
     private final AuthService authService;
+    private final OrderService orderService;
 
     // 유저 상세페이지
     @GetMapping("/user/{id}")
@@ -145,6 +145,37 @@ public class UserPageController {
             model.addAttribute("user",user);
 
             return "/user/order";
+        }else{
+            return "redirect:/main";
+        }
+    }
+
+    // 내 판매현황 조회
+    @Transactional
+    @GetMapping("/user/{id}/sale")
+    public String mySalePage(@PathVariable("id")Integer id,Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        if(principalDetails.getUser().getId() == id){
+            // 판매자 정보를 받아온다.
+            User seller = userPageService.findUser(id);
+
+            List<Order> orderList = orderService.orderList();
+            List<Order> mySaleList = new ArrayList<>();
+
+            for(Order order : orderList){
+                List<Order_item> orderItemList = order.getOrder_items();
+
+                for(Order_item order_item : orderItemList){
+                    if(seller == order_item.getItem().getUser()){
+                        mySaleList.add(order);
+                        break;
+                    }
+                }
+            }
+
+            model.addAttribute("saleList",mySaleList);
+            model.addAttribute("user",seller);
+
+            return "user/sale";
         }else{
             return "redirect:/main";
         }

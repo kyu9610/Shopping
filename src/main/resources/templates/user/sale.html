@@ -43,18 +43,24 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">주문내역</h1>
+                <h1 class="h2">판매 현황</h1>
             </div>
 
-            <div class="table-responsive" th:each="order : ${orderList}" style="padding: 20px;">
+            <div class="table-responsive" th:each="sale : ${saleList}" style="padding: 20px;">
                 <h4>
-                    <span th:text="'주문날짜 : ' + ${order.getCreateDate()}"></span>
-                    <span class="badge bg-secondary" th:text="${order.status}" th:if="${order.status == '주문 완료'}">주문 완료</span>
-                    <span class="badge bg-success" th:text="${order.status}" th:if="${order.status == '배송 대기'}">주문 완료</span>
-                    <span class="badge bg-info" th:text="${order.status}" th:if="${order.status == '배송중'}">주문 완료</span>
-                    <span class="badge bg-primary" th:text="${order.status}" th:if="${order.status == '배송 완료'}">주문 완료</span>
-                    <span class="badge bg-danger" th:text="${order.status}" th:if="${order.status == '환불중'}">주문 완료</span>
+                    <span th:text="'주문날짜 : ' + ${sale.getCreateDate()}"></span>
                 </h4>
+                <h3>
+                    <span th:text="'주문번호 : ' + ${sale.id}"></span>
+                    <span class="badge bg-secondary" th:text="${sale.status}" th:if="${sale.status == '주문 완료'}">주문 완료</span>
+                    <span class="badge bg-success" th:text="${sale.status}" th:if="${sale.status == '배송 대기'}">주문 완료</span>
+                    <span class="badge bg-info" th:text="${sale.status}" th:if="${sale.status == '배송중'}">주문 완료</span>
+                    <span class="badge bg-primary" th:text="${sale.status}" th:if="${sale.status == '배송 완료'}">주문 완료</span>
+                    <span class="badge bg-danger" th:text="${sale.status}" th:if="${sale.status == '환불중'}">주문 완료</span>
+                </h3>
+                <h5>
+                    <span th:text="'구매자 : ' + ${sale.user.username}"></span>
+                </h5>
                 <table class="table">
                     <thead class="bg-light">
                     <tr>
@@ -67,7 +73,7 @@
 
                     </thead>
                     <tbody>
-                    <tr th:each="item : ${order.order_items}">
+                    <tr th:each="item : ${sale.order_items}" th:if="${item.item.user} == ${user}">
                         <td th:text="${item.id}">아이템번호</td>
                         <td>
                             <a th:href="@{/item/view/{id}(id=${item.item.id})}"
@@ -79,12 +85,28 @@
                     </tr>
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td  colspan="4"></td>
-                            <td th:text="${order.price}"> 총 가격</td>
-                        </tr>
+                    <tr>
+                        <td  colspan="4"></td>
+                        <td th:text="${sale.price}"> 총 가격</td>
+                    </tr>
                     </tfoot>
                 </table>
+                <form th:action="@{/order/update/{id}(id=${sale.id})}" method="post" class="d-flex">
+                    <div class = "container">
+                        <select name="status">
+                            <option value="주문 완료">주문 완료</option>
+                            <option value="배송 대기">배송 대기</option>
+                            <option value="배송중">배송중</option>
+                            <option value="배송 완료">배송 완료</option>
+                            <option value="환불중">환불중</option>
+                        </select>
+                    </div>
+                    <div class = "col-auto">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                            업데이트
+                        </button>
+                    </div>
+                </form>
             </div>
             <hr>
         </main>
