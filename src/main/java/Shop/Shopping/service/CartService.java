@@ -107,15 +107,19 @@ public class CartService {
         for(Cart_item cart_item : userCart_items){
             // 재고 변경
             int stock = cart_item.getItem().getStock(); // 현재 재고를 변수에 저장
-            stock = stock - cart_item.getCount(); // 저장된 변수를 결제한 갯수만큼 빼준다
-            cart_item.getItem().setStock(stock); // 재고갯수 변경
+            if(stock >= cart_item.getCount()){
+                stock = stock - cart_item.getCount(); // 저장된 변수를 결제한 갯수만큼 빼준다
+                cart_item.getItem().setStock(stock); // 재고갯수 변경
+            }
 
             // 금액 처리
             if(buyer.getMoney() >= cart_item.getItem().getPrice()){
                 User seller = cart_item.getItem().getUser();
                 int cash = cart_item.getItem().getPrice(); // 아이템 가격을 변수에 저장
-                buyer.setMoney(cash * -1);
-                seller.setMoney(cash);
+                if(buyer.getMoney() >= cash){
+                    buyer.setMoney(cash * -1);
+                    seller.setMoney(cash);
+                }
             }
         }
     }
