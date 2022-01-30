@@ -1,13 +1,10 @@
 package Shop.Shopping.service;
 
-import Shop.Shopping.domain.cart.Cart;
 import Shop.Shopping.domain.cart_item.Cart_item;
-import Shop.Shopping.domain.item.Item;
 import Shop.Shopping.domain.item.ItemRepository;
 import Shop.Shopping.domain.order.Order;
 import Shop.Shopping.domain.order.OrderRepository;
 import Shop.Shopping.domain.order_item.Order_item;
-import Shop.Shopping.domain.order_item.Order_itemRepository;
 import Shop.Shopping.domain.user.User;
 import Shop.Shopping.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +16,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-    private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
 
     public void createOrder(User user){

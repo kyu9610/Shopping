@@ -7,6 +7,8 @@ import Shop.Shopping.domain.cart_item.Cart_itemRepository;
 import Shop.Shopping.domain.item.Item;
 import Shop.Shopping.domain.user.User;
 import Shop.Shopping.domain.user.UserRepository;
+import Shop.Shopping.exception.OutOfMoneyException;
+import Shop.Shopping.exception.OutOfStockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,6 +91,7 @@ public class CartService {
     }
 
     // 장바구니 결제
+    @Transactional
     public void cartPayment(int id){
         List<Cart_item> cart_items = cart_itemRepository.findAll(); // 전체 cart_item 찾기
         List<Cart_item> userCart_items = new ArrayList<>();
@@ -107,20 +110,21 @@ public class CartService {
         for(Cart_item cart_item : userCart_items){
             // 재고 변경
             int stock = cart_item.getItem().getStock(); // 현재 재고를 변수에 저장
-            if(stock >= cart_item.getCount()){
-                stock = stock - cart_item.getCount(); // 저장된 변수를 결제한 갯수만큼 빼준다
-                cart_item.getItem().setStock(stock); // 재고갯수 변경
+            if(stock < cart_item.getCount()){
+                throw new OutOfStockException("상품의 재고가 부족합니다. ( 현재 재고 수량 : " + stock + ")");
             }
+            stock = stock - cart_item.getCount(); // 저장된 변수를 결제한 갯수만큼 빼준다
+            cart_item.getItem().setStock(stock); // 재고갯수 변경
 
             // 금액 처리
-            if(buyer.getMoney() >= cart_item.getItem().getPrice()){
-                User seller = cart_item.getItem().getUser();
-                int cash = cart_item.getItem().getPrice(); // 아이템 가격을 변수에 저장
-                if(buyer.getMoney() >= cash){
-                    buyer.setMoney(cash * -1);
-                    seller.setMoney(cash);
-                }
+            User seller = cart_item.getItem().getUser();
+            int cash = cart_item.getItem().getPrice(); // 아이템 가격을 변수에 저장
+
+            if(buyer.getMoney() < cash){
+                throw new OutOfMoneyException("보유 머니가 부족합니다 . ( 현재 보유 머니 : " + buyer.getMoney() + ")");
             }
+            buyer.setMoney(cash * -1);
+            seller.setMoney(cash);
         }
     }
 
