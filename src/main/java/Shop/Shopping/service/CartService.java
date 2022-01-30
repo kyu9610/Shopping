@@ -30,6 +30,7 @@ public class CartService {
     }
 
     // 장바구니 생성
+    @Transactional
     public void addCart(User user, Item item, int count){
 
         Cart cart = cartRepository.findByUserId(user.getId());

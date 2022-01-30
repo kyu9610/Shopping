@@ -2,6 +2,7 @@ package Shop.Shopping.web.dto;
 
 import Shop.Shopping.config.auth.PrincipalDetails;
 import Shop.Shopping.domain.item.Item;
+import Shop.Shopping.domain.user.User;
 import Shop.Shopping.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

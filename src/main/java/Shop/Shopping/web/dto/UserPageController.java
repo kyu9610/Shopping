@@ -115,7 +115,8 @@ public class UserPageController {
     // 특정 상품을 장바구니에서 삭제
     @GetMapping("/user/{id}/cart/{cart_itemId}/delete")
     public String myCartDelete(@PathVariable("id") Integer id, @PathVariable("cart_itemId") int cart_itemId, @AuthenticationPrincipal PrincipalDetails principalDetails){
-        principalDetails.getUser().getCart().setCount(principalDetails.getUser().getCart().getCount() - 1);
+        User user = userPageService.findUser(id);
+        user.getCart().setCount(user.getCart().getCount() - 1);
         cartService.cartItemDelete(cart_itemId);
 
         return "redirect:/user/{id}/cart";
@@ -125,6 +126,7 @@ public class UserPageController {
     @Transactional
     @PostMapping("/user/{id}/cart/checkout")
     public String myCartPayment(@PathVariable("id") Integer id, Model model){
+        User user = userPageService.findUser(id);
         cartService.cartPayment(id); // 결제처리
         cartService.cartDelete(id); // 장바구니 비우기
 
