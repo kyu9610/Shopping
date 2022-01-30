@@ -1,51 +1,119 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>충전 페이지</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>잔액충전</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles2.css" rel="stylesheet" />
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:replace="/fragment/navigation :: menu(${user})">
 
-<div class="container">
-    <main>
-        <div class="py-5 text-center">
-            <h2>잔액 충전</h2>
-        </div>
-        <hr/>
+</nav>
 
-        <div class="row g-5">
-            <div class="col-md-7 col-lg-8 container">
-                <form th:action="@{/user/{id}/cashPro(id=${user.id})}" method="post">
-                    <div class="row g-3">
+<div class="container-fluid mt-3">
+    <div class="row">
 
-                        <div class="col-12">
-                            <label for="money" class="form-label">충전 금액</label>
-                            <input type="text" class="form-control" name="money" id="money" placeholder="ex) 30000">
-                            <div class="invalid-feedback">
-                                Money is empty.
-                            </div>
-                        </div>
+        <!-- SIDE BAR -->
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" th:replace="/fragment/navigation :: side(${user})">
 
-                    </div>
+        </nav>
 
-                    <hr class="my-4">
-                    <button class="w-100 btn btn-dark btn-lg mb-3" type="submit">충전</button>
-                    <!--                    <button class="w-100 btn btn-secondary btn-lg" th:href="@{memberlist}">목록으로</button>-->
-                </form>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">잔액충전</h1>
             </div>
-        </div>
-    </main>
 
-    <footer class="my-5 pt-5 text-muted text-center text-small">
-        <p class="mb-1">&copy; 2022년 01월 쇼핑몰 프로젝트</p>
-    </footer>
+            <!--            <tr th:each="cart_item : ${cartItems}">-->
+            <!--                <td th:text="${cart_item.getItem().getName()}">카트에 담긴 물품명</td><br>-->
+            <!--            </tr>-->
+            <div class="card-body bg-white mt-0 shadow">
+                <p style="font-weight: bold">카카오페이 현재 사용가능</p>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="5000"><span>5,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="10000"><span>10,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="15000"><span>15,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="20000"><span>20,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="25000"><span>25,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="30000"><span>30,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="35000"><span>35,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="40000"><span>40,000원</span></label>
+                <label class="box-radio-input"><input type="radio" name="cp_item" value="50000"><span>50,000원</span></label>
+                <p  style="color: #ac2925; margin-top: 30px">카카오페이의 최소 충전금액은 5,000원이며 <br/>최대 충전금액은 50,000원 입니다.</p>
+                <button type="button" class="btn btn-lg btn-block  btn-custom" id="charge_kakao">충 전 하 기</button>
+            </div>
+        </main>
+    </div>
 </div>
+<script>
+    $('#charge_kakao').click(function () {
+        // getter
+        var IMP = window.IMP;
+        IMP.init('imp85023039');
+        var money = $('input[name="cp_item"]:checked').val();
+        console.log(money);
 
+        IMP.request_pay({
+            pg: 'kakao',
+            merchant_uid: 'merchant_' + new Date().getTime(),
+
+            name: '주문명 : 주문명 설정',
+            amount: money,
+            buyer_email: 'iamport@siot.do',
+            buyer_name: '구매자이름',
+            buyer_tel: '010-1234-5678',
+            buyer_addr: '인천광역시 부평구',
+            buyer_postcode: '123-456'
+        }, function (rsp) {
+            console.log(rsp);
+            if (rsp.success) {
+                var msg = '결제가 완료되었습니다.';
+                msg += '고유ID : ' + rsp.imp_uid;
+                msg += '상점 거래ID : ' + rsp.merchant_uid;
+                msg += '결제 금액 : ' + rsp.paid_amount;
+                msg += '카드 승인번호 : ' + rsp.apply_num;
+                $.ajax({
+                    type: "GET",
+                    url: "/user/charge/point", //충전 금액값을 보낼 url 설정
+                    data: {
+                        "amount" : money
+                    },
+                });
+            } else {
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
+            }
+            alert(msg);
+            document.location.href="/main"; //alert창 확인 후 이동할 url 설정
+        });
+    });
+</script>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
 </body>
-
 </html>

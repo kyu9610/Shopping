@@ -50,7 +50,7 @@
                 <!--                <li class="nav-item"><a class="nav-link" th:href="@{/user/{id}(id=${user.id})}">마이페이지</a></li>-->
             </ul>
             <form class="d-flex">
-                <a class="btn btn-outline-dark" href="/main" th:text="'현재 잔액 : ' + ${user.money} + '₩'"></a>
+                <a class="btn btn-outline-dark" th:href="@{/user/{id}/cash(id=${user.id})}" th:text="'현재 잔액 : ' + ${user.money} + '₩'"></a>
                 <a class="btn btn-outline-dark" sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}/cart(id=${user.id})}">
                     <i class="bi-cart-fill me-1"></i>
                     Cart

@@ -13,4 +13,11 @@ public class UserPageService {
     public User findUser(Integer id){
         return userRepository.findById(id).get();
     }
+
+    public void chargePoint(int id,int amount){
+        User user = userRepository.findById(id).get();
+        user.setMoney(user.getMoney() + amount);
+
+        userRepository.save(user);
+    }
 }
