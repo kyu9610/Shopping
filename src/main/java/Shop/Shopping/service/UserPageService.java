@@ -16,7 +16,7 @@ public class UserPageService {
 
     public void chargePoint(int id,int amount){
         User user = userRepository.findById(id).get();
-        user.setMoney(user.getMoney() + amount);
+        user.setMoney(amount);
 
         userRepository.save(user);
     }
