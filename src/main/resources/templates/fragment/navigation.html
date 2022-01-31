@@ -41,6 +41,7 @@
                     <ul class="dropdown-menu" aria-labelledby="Mynavbar">
                         <li><a class="dropdown-item" th:href="@{/user/{id}(id=${user.id})}">내 정보</a></li>
                         <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/{id}/admin(id=${user.id})}">회원 관리</a></li>
                         <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_USER')" th:href="@{/user/{id}/order(id=${user.id})}">주문 내역</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" sec:authorize="hasRole('ROLE_SELLER')" href="/item/write">상품 등록</a></li>
@@ -101,6 +102,12 @@
                 <a class="nav-link" th:href="@{/user/{id}/sale(id=${user.id})}" sec:authorize="hasRole('ROLE_SELLER')">
                     <span data-feather="sale"></span>
                     판매 현황
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/{id}/admin(id=${user.id})}" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <span data-feather="admin"></span>
+                    회원 관리
                 </a>
             </li>
         </ul>

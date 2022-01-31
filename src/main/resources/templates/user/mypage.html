@@ -79,6 +79,7 @@
                 <div class="mb-3 row">
                     <label for="role" class="col-sm-2 col-form-label">Role</label>
                     <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" id="role" th:value="관리자[USER_ADMIN]" sec:authorize="hasRole('ROLE_ADMIN')">
                         <input type="text" readonly class="form-control-plaintext" id="role" th:value="판매자[USER_SELLER]" sec:authorize="hasRole('ROLE_SELLER')">
                         <input type="text" readonly class="form-control-plaintext" id="role" th:value="구매자[USER_USER]" sec:authorize="hasRole('ROLE_USER')">
                     </div>

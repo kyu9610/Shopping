@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,6 +204,29 @@ public class UserPageController {
     public String myCashPro(int amount,@AuthenticationPrincipal PrincipalDetails principalDetails){
         User user = userPageService.findUser(principalDetails.getUser().getId());
         userPageService.chargePoint(user.getId(),amount);
+        return "redirect:/main";
+    }
+
+    // 관리자 유전관리
+    @GetMapping("/user/{id}/admin")
+    public String adminPage(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        User admin = userPageService.findUser(id);
+        // User == Admin.Role 일 경우
+        if(admin.getRole().equals("ROLE_ADMIN")){
+            List<User> userList = userPageService.userList();
+            model.addAttribute("user",admin);
+            model.addAttribute("userList",userList);
+            return "/user/adminpage";
+        }else{
+            return "redirect:/main";
+        }
+    }
+
+    // 관리자유저 정보수정 처리
+    @PostMapping("/user/change/{id}")
+    public String userChange(@PathVariable("id") Integer id, User user){
+        userPageService.userUpdate(id,user);
+
         return "redirect:/main";
     }
 }
