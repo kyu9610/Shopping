@@ -55,4 +55,13 @@ public class OrderService {
         orderRepository.save(tempOrder);
     }
 
+    // 주문 환불
+    public void orderRefund(Integer id){
+        Order tempOrder = orderRepository.findById(id).get();
+        List<Order_item> itemList = tempOrder.getOrder_items();
+        for(Order_item order_item : itemList){
+
+        }
+        orderRepository.save(tempOrder);
+    }
 }

@@ -50,4 +50,8 @@ public class Item {
 
     @OneToMany(mappedBy = "item")
     private List<Order_item> order_items = new ArrayList<>();
+
+    public void changeStock(int count){
+        this.stock = this.stock + count;
+    }
 }

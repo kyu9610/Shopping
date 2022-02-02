@@ -56,7 +56,8 @@
                     <span class="badge bg-success" th:text="${sale.status}" th:if="${sale.status == '배송 대기'}">주문 완료</span>
                     <span class="badge bg-info" th:text="${sale.status}" th:if="${sale.status == '배송중'}">주문 완료</span>
                     <span class="badge bg-primary" th:text="${sale.status}" th:if="${sale.status == '배송 완료'}">주문 완료</span>
-                    <span class="badge bg-danger" th:text="${sale.status}" th:if="${sale.status == '환불중'}">주문 완료</span>
+                    <span class="badge bg-danger" th:text="${sale.status} + '진행'" th:if="${sale.status == '환불'}">주문 완료</span>
+                    <span class="badge bg-danger" th:text="${sale.status}" th:if="${sale.status == '환불 완료'}">주문 완료</span>
                 </h3>
                 <h5>
                     <span th:text="'구매자 : ' + ${sale.user.username}"></span>
@@ -91,7 +92,7 @@
                     </tr>
                     </tfoot>
                 </table>
-                <form th:action="@{/order/update/{id}(id=${sale.id})}" method="post" class="d-flex">
+                <form th:action="@{/order/update/{id}(id=${sale.id})}" th:if="${sale.status != '환불' && sale.status != '환불 완료'}" method="post" class="d-flex">
                     <div class = "container">
                         <select name="status">
                             <option value="주문 완료">주문 완료</option>
@@ -104,6 +105,23 @@
                     <div class = "col-auto">
                         <button class="btn btn-outline-dark flex-shrink-0" type="submit">
                             업데이트
+                        </button>
+                    </div>
+                </form>
+                <form th:action="@{/order/refund/{id}(id=${sale.id})}" th:if="${sale.status == '환불' && sale.status != '환불 완료'}" method="post" class="d-flex">
+                    <div class = "container">
+                        <select name="status" style="display: none">
+                            <option value="환불 완료">환불 완료</option>
+                        </select>
+                    </div>
+                    <div class = "col-auto" style="margin-right: 10px">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit" th:formaction="@{/order/refund/{id}(id=${sale.id})}">
+                            환불 처리
+                        </button>
+                    </div>
+                    <div class = "col-auto">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit" th:formaction="@{/order/refundCancle/{id}(id=${sale.id})}">
+                            환불 거절
                         </button>
                     </div>
                 </form>

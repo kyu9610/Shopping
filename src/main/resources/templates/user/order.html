@@ -53,7 +53,8 @@
                     <span class="badge bg-success" th:text="${order.status}" th:if="${order.status == '배송 대기'}">주문 완료</span>
                     <span class="badge bg-info" th:text="${order.status}" th:if="${order.status == '배송중'}">주문 완료</span>
                     <span class="badge bg-primary" th:text="${order.status}" th:if="${order.status == '배송 완료'}">주문 완료</span>
-                    <span class="badge bg-danger" th:text="${order.status}" th:if="${order.status == '환불중'}">주문 완료</span>
+                    <span class="badge bg-danger" th:text="${order.status} + '대기'" th:if="${order.status == '환불'}">주문 완료</span>
+                    <span class="badge bg-danger" th:text="${order.status}" th:if="${order.status == '환불 완료'}">주문 완료</span>
                 </h4>
                 <table class="table">
                     <thead class="bg-light">
@@ -85,6 +86,18 @@
                         </tr>
                     </tfoot>
                 </table>
+                <form th:action="@{/order/update/{id}(id=${order.id})}" th:if="${order.status != '환불 완료'}" method="post" class="d-flex">
+                    <div class = "container">
+                        <select name="status" style="display: none">
+                            <option value="환불">환불</option>
+                        </select>
+                    </div>
+                    <div class = "col-auto">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                            환불
+                        </button>
+                    </div>
+                </form>
             </div>
             <hr>
         </main>

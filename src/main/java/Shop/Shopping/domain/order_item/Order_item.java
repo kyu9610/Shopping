@@ -3,10 +3,8 @@ package Shop.Shopping.domain.order_item;
 import Shop.Shopping.domain.item.Item;
 import Shop.Shopping.domain.order.Order;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Builder
 @AllArgsConstructor
