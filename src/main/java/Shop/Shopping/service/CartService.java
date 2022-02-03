@@ -106,6 +106,7 @@ public class CartService {
 
         orderService.order(buyer,userCart_items);
 
+
         // 반복문을 이용하여 접속 User의 Cart_item 만 찾아서 삭제
         for(Cart_item cart_item : userCart_items){
             // 재고 변경

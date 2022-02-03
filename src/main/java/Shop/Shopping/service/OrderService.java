@@ -1,12 +1,11 @@
 package Shop.Shopping.service;
 
 import Shop.Shopping.domain.cart_item.Cart_item;
-import Shop.Shopping.domain.item.ItemRepository;
 import Shop.Shopping.domain.order.Order;
 import Shop.Shopping.domain.order.OrderRepository;
 import Shop.Shopping.domain.order_item.Order_item;
+import Shop.Shopping.domain.sale.SaleRepository;
 import Shop.Shopping.domain.user.User;
-import Shop.Shopping.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final SaleRepository saleRepository;
 
     public void createOrder(User user){
         Order order = new Order();
