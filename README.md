@@ -3,7 +3,7 @@
 - 명지대학교 스프링부트 스터디를 통해 구현하는 쇼핑몰입니다.
 - 쇼핑몰의 기능은 사용자 입장에서는 [조회, 장바구니, 결제] 입니다.
 - 쇼핑몰의 기능은 판매자 입장에서는 [물품등록, 재고확인, 잔고확인] 입니다.
-dd
+
 
 ### 프로젝트 설정
 - Gradle
@@ -25,7 +25,7 @@ dd
 - Application.properties 파일은 resources 안에다가 만들고 아래 코드 입력하시면 됩니다.
 
 Application.properties
-```aidl
+```
 server.port=8080
 
 spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
